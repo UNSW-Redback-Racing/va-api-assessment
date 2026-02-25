@@ -13,6 +13,10 @@ The focus is on:
   provided; only the health endpoint is pre-defined).
 - Reasonable testing and robustness.
 
+This backend is intended to be consumed by the **VA frontend assessment** application  
+([`va-frontend-assessment`](https://github.com/UNSW-Redback-Racing/va-frontend-assessment)),
+but your API design should be generic enough for other clients too.
+
 ---
 
 ## Scenario
