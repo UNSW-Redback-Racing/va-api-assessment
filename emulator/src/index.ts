@@ -33,7 +33,22 @@ function randomInRange(min: number, max: number): number {
   return Math.random() * (max - min) + min;
 }
 
+function randomUnparseableString(): string {
+  const patterns: Array<() => string> = [
+    // Looks numeric at a glance but is not a valid number
+    () => `NaNish${Math.floor(Math.random() * 1000)}`,
+    // Digits with a non-numeric character in the middle
+    () =>
+      `${Math.floor(Math.random() * 1000)}X${Math.floor(Math.random() * 1000)}`,
+    // Random base-36 chunk, usually alphanumeric
+    () => Math.random().toString(36).slice(2, 8).toUpperCase()
+  ];
+  const pick = patterns[Math.floor(Math.random() * patterns.length)];
+  return pick();
+}
+
 // With this probability the emulator sends a reading in an incorrect format (for assessment).
+// Within the invalid readings, there is a 50/50 split between recoverable vs drop-worthy errors.
 const INVALID_FORMAT_PROBABILITY = 0.15;
 // With this probability the emulator sends a value outside the sensor's valid range (overspill).
 const OVERSPILL_PROBABILITY = 0.20;
@@ -55,17 +70,29 @@ function scheduleSensor(sensor: SensorConfig): void {
     const timestamp = Date.now() / 1000;
 
     if (Math.random() < INVALID_FORMAT_PROBABILITY) {
-      // Emit an invalid payload (wrong types, missing field, or junk) so the API must validate.
-      const roll = Math.random();
-      const payload =
-        roll < 0.33
-          ? { sensorId: String(sensorId), value, timestamp }
-          : roll < 0.66
-            ? { sensorId, value: String(value), timestamp }
-            : { sensorId, value, timestamp, extra: 'junk' };
+      // Emit an invalid payload so the API must validate and decide whether to fix or drop it.
+      // Use a single sub-roll to split evenly across four cases (2 recoverable, 2 drop-worthy).
+      const sub = Math.random();
+      let payload: unknown;
 
-      // Log invalid-format payloads for visibility.
-      console.log('[emulator] invalid-format', JSON.stringify(payload));
+      if (sub < 0.25) {
+        // RECOVERABLE: sensorId as numeric string
+        payload = { sensorId: String(sensorId), value, timestamp };
+        console.log('[emulator] invalid-recoverable', JSON.stringify(payload));
+      } else if (sub < 0.5) {
+        // RECOVERABLE: value as numeric string
+        payload = { sensorId, value: value.toFixed(3), timestamp };
+        console.log('[emulator] invalid-recoverable', JSON.stringify(payload));
+      } else if (sub < 0.75) {
+        // DROP-WORTHY: non-numeric value that cannot be parsed cleanly
+        payload = { sensorId, value: randomUnparseableString(), timestamp };
+        console.log('[emulator] invalid-drop', JSON.stringify(payload));
+      } else {
+        // DROP-WORTHY: missing sensorId
+        payload = { value, timestamp };
+        console.log('[emulator] invalid-drop', JSON.stringify(payload));
+      }
+
       telemetryEmitter.emit('reading', payload);
     } else {
       const reading: TelemetryReading = { sensorId, value, timestamp };
