@@ -1,22 +1,21 @@
-## Vehicle Analytics Frontend Assessment
+## Vehicle Analytics Fullstack Assessment – Frontend
 
-Your task is to design and implement a **frontend telemetry dashboard** that consumes the API you build in the VA API assessment.
+Your task is to design and implement a **frontend telemetry dashboard** that consumes the API you build in the fullstack assessment (see root README).
 
 The focus is on:
 
 - Clear visualisation of multiple sensors.
 - Good UX and information hierarchy.
 - Consuming **both**:
-  - The **metadata** route(s) you design in the API assessment.
-  - The **data** route(s) / WebSocket stream you design in the API assessment.
+  - The **metadata** route(s) you design in the API section.
+  - The **data** route(s) / WebSocket stream you design in the API section.
 - A **low-fidelity Figma mockup** with short justifications.
 
 ---
 
 ## Scenario
 
-In the API assessment ([`va-api-assessment`](https://github.com/UNSW-Redback-Racing/va-api-assessment))
-you design the backend API surface on top of the emulator. At a minimum, your API must expose:
+In this repository ([`va-fullstack-assessment`](https://github.com/UNSW-Redback-Racing/va-fullstack-assessment)) you design the backend API surface on top of the emulator. At a minimum, your API must expose:
 
 - One or more **metadata** endpoints that allow the frontend to resolve `sensorId` to a
   human–readable `sensorName` and `unit`.
@@ -24,7 +23,7 @@ you design the backend API surface on top of the emulator. At a minimum, your AP
   (`sensorId`, `value`, `timestamp`).
 - A `GET /health` endpoint that reports API/emulator connectivity.
 
-This frontend assessment expects you to **consume the API you designed**:
+The frontend part of the assessment expects you to **consume the API you designed**:
 
 - Use your metadata endpoint(s) to build a mapping from `sensorId` to `sensorName` and `unit`.
 - Use your data endpoint(s) and/or WebSocket stream to show current values.
@@ -45,7 +44,7 @@ This repo provides a minimal **Next.js + TailwindCSS** app with:
 
 You are expected to **adapt and extend** this:
 
-- Update the client to call the metadata and data routes you designed in the API assessment.
+- Update the client to call the metadata and data routes you designed in the API section.
 - If you expose a WebSocket stream, you may use it for live updates instead of (or in addition to) repeated HTTP requests, to reduce latency and load.
 
 - Improve the layout and visual hierarchy.
@@ -84,12 +83,12 @@ You are expected to **adapt and extend** this:
 Prerequisites:
 
 - Node.js **18+**
-- The api-assessment backend API running locally (default `http://localhost:4000`).
+- The backend API running locally (default `http://localhost:4000`); start it from the repo root with `docker compose up` or run the API locally.
 
 Steps:
 
 ```bash
-cd va-frontend-assessment
+cd va-fullstack-assessment/frontend
 npm install
 npm run dev
 ```

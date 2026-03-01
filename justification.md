@@ -1,6 +1,6 @@
-# Vehicle Analytics Assessment – Justification
+# Vehicle Analytics Fullstack Assessment – Justification
 
-## API Assessment
+## API
 
 Use this file to briefly explain your design decisions. Bullet points are fine.
 
@@ -35,7 +35,7 @@ Use this file to briefly explain your design decisions. Bullet points are fine.
 - How you log the timestamp and error message (including sensor) when a sensor exceeds the threshold (&gt;3 out-of-range in 5 s):
 
 
-## Frontend Assessment
+## Frontend
 
 Use this section (or `frontend/justification.md`) to briefly explain your frontend design decisions. Bullet points are fine.
 

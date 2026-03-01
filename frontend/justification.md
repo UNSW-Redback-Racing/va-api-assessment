@@ -1,4 +1,4 @@
-## Vehicle Analytics Frontend Assessment – Justification
+## Vehicle Analytics Fullstack Assessment – Frontend justification
 
 Use this file to briefly explain your design decisions. Bullet points are fine.
 

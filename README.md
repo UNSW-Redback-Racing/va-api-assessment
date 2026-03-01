@@ -1,20 +1,16 @@
-## Vehicle Analytics API Assessment
+## Vehicle Analytics Fullstack Assessment
 
-Your task is to **design and implement** a clean API that exposes telemetry data from a
-**multi-sensor emulator**. The repository provides a **skeleton** API (health check only) and a
-**separate emulator service** that generates the data. **You must define and implement** the API
-routes that consume the emulator and expose sensor metadata and telemetry to clients.
+Your task is to **design and implement** a clean API and a telemetry dashboard frontend. This
+repository (**va-fullstack-assessment**) provides a **skeleton** API (health check only), a
+**separate emulator service** that generates data, and a minimal frontend in `frontend/`. You must
+define and implement the API routes that consume the emulator and expose sensor metadata and
+telemetry, then build the frontend that consumes that API.
 
 The focus is on:
 
-- API design and separation of concerns (metadata vs data).
-- Clear, consistent contracts and error handling.
-- **You** produce an OpenAPI/Swagger spec that documents your **final** API (no full spec is
-  provided; only the health endpoint is pre-defined).
-- Reasonable testing and robustness.
-
-This repository includes both the API assessment and the **frontend assessment** (in `frontend/`).
-The frontend consumes the API you build; your API design should be generic enough for other clients too.
+- API design and separation of concerns (metadata vs data); clear, consistent contracts and error handling.
+- **You** produce an OpenAPI/Swagger spec that documents your **final** API (no full spec is provided; only the health endpoint is pre-defined).
+- A frontend that visualises multiple sensors with good UX; both API and frontend are part of the assessment.
 
 ---
 
@@ -36,37 +32,20 @@ Each sensor has:
 
 ---
 
-## Required API behaviour (what you must provide)
+## API
 
-Your API must support the following **behaviour**; the exact paths, HTTP methods, and
-payload shapes are for you to design.
+**You may NOT modify the emulator (`emulator/`) for any task.** Justify your approach in `justification.md`.
 
-1. **Health**
-   - A health check endpoint is already implemented at `GET /health`. You may keep it as-is
-     or extend it.
+### Required behaviour
 
-2. **Metadata**
-   - Clients need a way to discover sensors and map `sensorId` → to the `sensorName` and `unit`.
-   - Your API must expose, for each sensor, at least: **sensorId**, **sensorName**, **unit**.
+Your API must support the following; the exact paths, HTTP methods, and payload shapes are for you to design.
 
-3. **Data**
-   - Clients need access to **latest** telemetry, a route that provides the most recent reading
-     for all sensors (sensorId, value, timestamp).
-   - You may also offer **streaming** (e.g. WebSocket or SSE) so clients can receive
-     readings in real time; that is optional but encouraged if you have time.
+1. **Health** – A health check is already implemented at `GET /health`. You may keep it as-is or extend it.
+2. **Metadata** – Clients need a way to discover sensors and map `sensorId` → `sensorName` and `unit`. Expose at least **sensorId**, **sensorName**, **unit** per sensor.
+3. **Data** – Clients need access to **latest** telemetry (sensorId, value, timestamp). Optionally offer **streaming** (e.g. WebSocket or SSE).
+4. **Documentation** – Document your **final** API with an OpenAPI 3.x spec and state in `justification.md` how to view or use it (e.g. Swagger UI).
 
-4. **Documentation**
-   - You must document your **final** API with an OpenAPI 3.x spec (e.g. `openapi.yaml` or
-     equivalent) and state in `justification.md` how to view or use it (e.g. Swagger UI).
-
-The repository does **not** provide a full OpenAPI spec for the metadata and data endpoints.
-Designing the routes, status codes, and response shapes is part of the assessment.
-
----
-
-## Tasks
-
-**You may NOT modify the emulator (`emulator/`) for any task.** Justify your approach for each task in `justification.md`.
+### Tasks
 
 1. **API design**  
    Design and implement the API surface on top of the emulator: choose paths, methods and
@@ -77,7 +56,7 @@ Designing the routes, status codes, and response shapes is part of the assessmen
    When running, the emulator occasionally sends readings in an **incorrect format** (e.g. wrong types, extra fields). This will be visible if you forward the raw stream to clients. Add logic in the **API** so that invalid data is not sent to the frontend (or stored as latest). What you do with invalid data (drop, log, count, etc.) is up to you, so long as it is justified in `justification.md`.
 
 3. **Out-of-range values (sensor-specific)**  
-   The emulator occasionally sends values **outside the valid range** for a sensor. Treat a reading as out-of-range when **value** is outside the valid min–max for that sensor in the table below. Add a feature in the **API** so that for **each sensor**, when out-of-range values for that sensor occur **more than 3 times in 5 seconds**, the current timestamp and a short error message (including the sensor identifier) are printed to the console.
+   The emulator occasionally sends values **outside the valid range** for a sensor. Treat a reading as out-of-range when **value** is outside the valid min–max for that sensor in the table below. For **each sensor**, when out-of-range values occur **more than 3 times in 5 seconds**, print the current timestamp and a short error message (including the sensor identifier) to the console.
 
    **Valid range per sensor** (treat value outside [min, max] as out-of-range):
 
@@ -98,41 +77,30 @@ Designing the routes, status codes, and response shapes is part of the assessmen
 
 ---
 
-## Frontend assessment (in `frontend/`)
+## Frontend
 
-The `frontend/` folder contains a **frontend telemetry dashboard** assessment. Your task there is to
-design and implement a dashboard that consumes the API you build above.
+The `frontend/` folder contains a minimal Next.js app. Your task is to design and implement a **telemetry dashboard** that consumes the API you build above.
 
-**Focus:**
+### Required behaviour
 
-- Clear visualisation of multiple sensors.
-- Good UX and information hierarchy.
-- Consuming **both** the **metadata** route(s) and **data** route(s) / WebSocket stream you design in the API.
-- A **low-fidelity Figma mockup** with short justifications (in `frontend/justification.md`).
+- Clear visualisation of multiple sensors; good UX and information hierarchy.
+- Consume **both** the **metadata** route(s) and **data** route(s) / WebSocket stream you design in the API.
+- A **low-fidelity Figma mockup** with short justifications (in `frontend/justification.md` or the Frontend section of root `justification.md`).
+- Use **shadcn/ui** for core layout and UI; see `frontend/README.md` for details.
 
-**Requirements:**
+### Tasks
 
-1. **API consumption**
-   - Use the metadata endpoint to resolve `sensorId` to human-readable `sensorName` and `unit`.
-   - Use the data endpoint(s) to display current values and, optionally, basic history.
+1. **API consumption**  
+   Use the metadata endpoint to resolve `sensorId` to human-readable `sensorName` and `unit`. Use the data endpoint(s) to display current values and, optionally, basic history.
 
-2. **Low-fidelity Figma mockup**
-   - Create a minimal low-fidelity Figma mockup of the key dashboard screen(s).
-   - Document the Figma link and brief UX justifications in `frontend/justification.md`.
+2. **Low-fidelity Figma mockup**  
+   Create a minimal low-fidelity Figma mockup of the key dashboard screen(s). Document the Figma link and brief UX justifications in `frontend/justification.md` (or the Frontend section of root `justification.md`).
 
-3. **Dashboard behaviour**
-   - Show multiple sensors at once.
-   - Make it clear which sensors are most important / critical.
-   - Apply sensible formatting (e.g. decimal places, units).
-   - You may choose how to represent “status” (e.g. colours, badges).
+3. **Dashboard behaviour**  
+   Show multiple sensors at once; make it clear which sensors are most important. Apply sensible formatting (e.g. decimal places, units). You may choose how to represent “status” (e.g. colours, badges).
 
-4. **Code quality**
-   - Use idiomatic React/Next.js (App Router).
-   - Keep components small and focused.
-
-The scaffold in `frontend/` uses `GET /health` for connection status; you extend it to call your
-metadata and data routes and present telemetry in a way useful to race engineers. Use **shadcn/ui**
-for core layout and UI; see `frontend/README.md` for full details and running the frontend locally.
+4. **Code quality**  
+   Use idiomatic React/Next.js (App Router). Keep components small and focused.
 
 ---
 
@@ -163,7 +131,7 @@ The emulator, API, and frontend are run via **Docker Compose**.
 From the repository root:
 
 ```bash
-cd va-api-assessment
+cd va-fullstack-assessment
 docker compose up --build
 ```
 
@@ -185,7 +153,7 @@ run **both** the emulator and the API (the API needs the emulator to get data).
 1. **Emulator** (run first, in one terminal):
 
    ```bash
-   cd va-api-assessment/emulator
+   cd va-fullstack-assessment/emulator
    npm install
    npm run build
    npm start
@@ -196,7 +164,7 @@ run **both** the emulator and the API (the API needs the emulator to get data).
 2. **API** (in another terminal):
 
    ```bash
-   cd va-api-assessment/api
+   cd va-fullstack-assessment/api
    npm install
    npm run dev
    ```
@@ -206,7 +174,7 @@ run **both** the emulator and the API (the API needs the emulator to get data).
 3. **Frontend** (optional, with API running):
 
    ```bash
-   cd va-api-assessment/frontend
+   cd va-fullstack-assessment/frontend
    npm install
    npm run dev
    ```

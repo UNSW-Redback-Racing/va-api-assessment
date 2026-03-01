@@ -50,7 +50,7 @@ export default function Page() {
             <div>
               <h1 className="text-lg font-semibold tracking-tight">Spyder Telemetry</h1>
               <p className="text-xs text-muted-foreground">
-                Vehicle Analytics – frontend assessment
+                Vehicle Analytics Fullstack Assessment
               </p>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function Page() {
               <CardDescription className="text-xs text-destructive-foreground/80">
                 {healthError}
                 {healthError.includes('fetch') || healthError.includes('Failed to reach')
-                  ? ` Ensure the API is running at ${API_BASE_URL} (e.g. va-api-assessment: docker compose up, or cd api && npm run dev).`
+                  ? ` Ensure the API is running at ${API_BASE_URL} (e.g. va-fullstack-assessment: docker compose up, or cd api && npm run dev).`
                   : ''}
               </CardDescription>
             </CardHeader>
@@ -100,7 +100,7 @@ export default function Page() {
             <CardDescription>
               This skeleton only calls <code className="rounded bg-muted px-1 py-0.5 text-[10px]">GET /health</code>.
               Implement consumption of your API’s <strong>metadata</strong> and <strong>data</strong> routes (designed
-              in the API assessment) to populate the dashboard: resolve sensorId → sensorName and unit, and display
+              in the API section) to populate the dashboard: resolve sensorId → sensorName and unit, and display
               latest telemetry (and optionally a live stream). Use <code className="rounded bg-muted px-1 py-0.5 text-[10px]">src/lib/api-client.ts</code> to add
               fetch functions for your endpoints, then wire them up here.
             </CardDescription>

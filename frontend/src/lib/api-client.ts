@@ -1,6 +1,6 @@
 /**
  * API client for the Vehicle Analytics backend.
- * The backend API surface is designed by you in the API assessment (va-api-assessment).
+ * The backend API surface is designed by you in the fullstack assessment (va-fullstack-assessment).
  * The only guaranteed endpoint is GET /health. You must add functions that call your
  * metadata and data routes (paths and response shapes are up to your API design).
  */
@@ -48,7 +48,7 @@ export async function fetchHealth(timeoutMs = 3000): Promise<HealthResponse> {
 
 // ---------------------------------------------------------------------------
 // Add your own functions here to call the metadata and data endpoints you
-// designed in the API assessment (e.g. fetchSensors(), fetchLatestTelemetry(),
+// designed in the API section (e.g. fetchSensors(), fetchLatestTelemetry(),
 // or whatever paths and response shapes you defined). Use the types above
 // or define new ones to match your API.
 // ---------------------------------------------------------------------------
