@@ -85,8 +85,8 @@ The `frontend/` folder contains a minimal Next.js app. Your task is to design an
 
 - Clear visualisation of multiple sensors; good UX and information hierarchy.
 - Consume **both** the **metadata** route(s) and **data** route(s) / WebSocket stream you design in the API.
-- A **low-fidelity Figma mockup** with short justifications (in `frontend/justification.md` or the Frontend section of root `justification.md`).
-- Use **shadcn/ui** for core layout and UI; see `frontend/README.md` for details.
+- A **low-fidelity Figma mockup** with short justifications in `justification.md` (Frontend section).
+- Use **shadcn/ui** for core layout and UI. The scaffold in `frontend/` is Next.js with `src/app/page.tsx` and `src/lib/api-client.ts`; extend these to call your API and display telemetry.
 
 ### Tasks
 
@@ -94,7 +94,7 @@ The `frontend/` folder contains a minimal Next.js app. Your task is to design an
    Use the metadata endpoint to resolve `sensorId` to human-readable `sensorName` and `unit`. Use the data endpoint(s) to display current values and, optionally, basic history.
 
 2. **Low-fidelity Figma mockup**  
-   Create a minimal low-fidelity Figma mockup of the key dashboard screen(s). Document the Figma link and brief UX justifications in `frontend/justification.md` (or the Frontend section of root `justification.md`).
+   Create a minimal low-fidelity Figma mockup of the key dashboard screen(s). Document the Figma link and brief UX justifications in `justification.md` (Frontend section).
 
 3. **Dashboard behaviour**  
    Show multiple sensors at once; make it clear which sensors are most important. Apply sensible formatting (e.g. decimal places, units). You may choose how to represent “status” (e.g. colours, badges).
@@ -198,7 +198,7 @@ run **both** the emulator and the API (the API needs the emulator to get data).
 - Any design trade-offs (e.g. polling vs WebSocket, filtering, or future extensions you
   considered).
 
-**Frontend** (`frontend/justification.md`):
+**Frontend** (in `justification.md`):
 
 - A link to your Figma mockup and what it covers.
 - Why you chose your particular layout and components.

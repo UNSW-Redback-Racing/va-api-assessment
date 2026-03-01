@@ -37,7 +37,7 @@ Use this file to briefly explain your design decisions. Bullet points are fine.
 
 ## Frontend
 
-Use this section (or `frontend/justification.md`) to briefly explain your frontend design decisions. Bullet points are fine.
+Use this section to briefly explain your frontend design decisions. Bullet points are fine.
 
 ### 1. Figma mockup
 
