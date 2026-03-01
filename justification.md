@@ -1,7 +1,5 @@
 # Vehicle Analytics Assessment – Justification
 
----
-
 ## API Assessment
 
 Use this file to briefly explain your design decisions. Bullet points are fine.
@@ -36,7 +34,6 @@ Use this file to briefly explain your design decisions. Bullet points are fine.
 - How you use the valid-range table (sensor name or sensorId → min/max) and count out-of-range readings per sensor in a 5-second window:
 - How you log the timestamp and error message (including sensor) when a sensor exceeds the threshold (&gt;3 out-of-range in 5 s):
 
----
 
 ## Frontend Assessment
 
