@@ -17,3 +17,11 @@ services:
     depends_on:
       - emulator
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api

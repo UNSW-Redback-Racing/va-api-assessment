@@ -13,9 +13,8 @@ The focus is on:
   provided; only the health endpoint is pre-defined).
 - Reasonable testing and robustness.
 
-This backend is intended to be consumed by the **VA frontend assessment** application  
-([`va-frontend-assessment`](https://github.com/UNSW-Redback-Racing/va-frontend-assessment)),
-but your API design should be generic enough for other clients too.
+This repository includes both the API assessment and the **frontend assessment** (in `frontend/`).
+The frontend consumes the API you build; your API design should be generic enough for other clients too.
 
 ---
 
@@ -99,6 +98,44 @@ Designing the routes, status codes, and response shapes is part of the assessmen
 
 ---
 
+## Frontend assessment (in `frontend/`)
+
+The `frontend/` folder contains a **frontend telemetry dashboard** assessment. Your task there is to
+design and implement a dashboard that consumes the API you build above.
+
+**Focus:**
+
+- Clear visualisation of multiple sensors.
+- Good UX and information hierarchy.
+- Consuming **both** the **metadata** route(s) and **data** route(s) / WebSocket stream you design in the API.
+- A **low-fidelity Figma mockup** with short justifications (in `frontend/justification.md`).
+
+**Requirements:**
+
+1. **API consumption**
+   - Use the metadata endpoint to resolve `sensorId` to human-readable `sensorName` and `unit`.
+   - Use the data endpoint(s) to display current values and, optionally, basic history.
+
+2. **Low-fidelity Figma mockup**
+   - Create a minimal low-fidelity Figma mockup of the key dashboard screen(s).
+   - Document the Figma link and brief UX justifications in `frontend/justification.md`.
+
+3. **Dashboard behaviour**
+   - Show multiple sensors at once.
+   - Make it clear which sensors are most important / critical.
+   - Apply sensible formatting (e.g. decimal places, units).
+   - You may choose how to represent “status” (e.g. colours, badges).
+
+4. **Code quality**
+   - Use idiomatic React/Next.js (App Router).
+   - Keep components small and focused.
+
+The scaffold in `frontend/` uses `GET /health` for connection status; you extend it to call your
+metadata and data routes and present telemetry in a way useful to race engineers. Use **shadcn/ui**
+for core layout and UI; see `frontend/README.md` for full details and running the frontend locally.
+
+---
+
 ## Emulator (read-only, black box)
 
 The **only** emulator lives under `emulator/`. It is a **black box**: it does not store or
@@ -117,9 +154,9 @@ hold data; it only outputs a stream of readings. Do not modify the emulator code
 
 ---
 
-## Setup and running the API
+## Setup and running
 
-The emulator and API are run via **Docker Compose**.
+The emulator, API, and frontend are run via **Docker Compose**.
 
 **Prerequisites:** Docker and Docker Compose.
 
@@ -130,10 +167,15 @@ cd va-api-assessment
 docker compose up --build
 ```
 
-This starts the **emulator** on port **3001** and the **api** on port **4000**. The API
-receives `EMULATOR_URL=http://emulator:3001`. The API skeleton implements `GET /health`
-(which checks that the emulator is reachable). You must add routes that consume the
-emulator stream, store latest per sensor, and expose metadata and latest telemetry.
+This starts:
+
+- **emulator** on port **3001**
+- **api** on port **4000** (uses `EMULATOR_URL=http://emulator:3001`)
+- **frontend** on port **3000** (uses API at `http://localhost:4000`)
+
+The API skeleton implements `GET /health` (which checks that the emulator is reachable).
+You must add routes that consume the emulator stream, store latest per sensor, and expose
+metadata and latest telemetry. The frontend then consumes those routes.
 
 To run in the background: `docker compose up --build -d`.
 
@@ -161,9 +203,21 @@ run **both** the emulator and the API (the API needs the emulator to get data).
    
    By default the API expects the emulator at `http://localhost:3001`. API: `http://localhost:4000`.
 
+3. **Frontend** (optional, with API running):
+
+   ```bash
+   cd va-api-assessment/frontend
+   npm install
+   npm run dev
+   ```
+
+   Visit `http://localhost:3000` (API base URL defaults to `http://localhost:4000`).
+
 ---
 
 ## What to put in `justification.md`
+
+**API** (root `justification.md`):
 
 - Your **API design**: chosen paths, methods, and response shapes for metadata and data
   (and streaming if implemented).
@@ -176,12 +230,30 @@ run **both** the emulator and the API (the API needs the emulator to get data).
 - Any design trade-offs (e.g. polling vs WebSocket, filtering, or future extensions you
   considered).
 
+**Frontend** (`frontend/justification.md`):
+
+- A link to your Figma mockup and what it covers.
+- Why you chose your particular layout and components.
+- How you expect engineers to use this dashboard (what questions it helps answer).
+- Any trade-offs or limitations you are aware of.
+
 ---
 
 ## Helpful resources
+
+**API**
 
 - [Node.js documentation](https://nodejs.org/docs/latest-v18.x/api/)
 - [Express.js guide](https://expressjs.com/en/guide/routing.html)
 - [TypeScript handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
 - [OpenAPI / Swagger basics](https://swagger.io/docs/specification/about/)
 - [WebSockets in Node (`ws`)](https://github.com/websockets/ws)
+
+**Frontend**
+
+- [Next.js documentation](https://nextjs.org/docs)
+- [Tailwind CSS documentation](https://tailwindcss.com/docs)
+- [shadcn/ui documentation](https://ui.shadcn.com/docs)
+- [shadcn Studio](https://shadcnstudio.com/)
+- [React documentation](https://react.dev/learn)
+- [tweakcn documentation](https://tweakcn.com/)
